@@ -7,7 +7,7 @@ modules::chocolatey::adobereader::ensure: "latest"
 modules::chocolatey::adobereader::provider: "chocolatey"
 chocolatey::choco_install_location: "c:\\choco\\"
 profile::windows::iis::testing: "From profile module"
-profile::windows::iis::notencrypted: "From hieradata dir, This is has now been updated with new data "
+profile::windows::iis::notencrypted: "From hieradata dir, This is has now been updated with new data. More updates from 2pm "
 profile::windows::iis::encrypted: >
     ENC[PKCS7,MIIBqQYJKoZIhvcNAQcDoIIBmjCCAZYCAQAxggEhMIIBHQIBADAFMAACAQEw
     DQYJKoZIhvcNAQEBBQAEggEALmJTvIsXlqI0Dc/+kc9+4XdfkUx3DLZOj38Q
