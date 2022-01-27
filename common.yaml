@@ -9,6 +9,10 @@ modules::chocolatey::adobereader::provider: "chocolatey"
 chocolatey::choco_install_location: "c:\\choco\\"
 profile::windows::iis::testi
 ng: "From hiera data repo. wrote doco"
+- -- -
+-
+-m
+
 profile::windows::iis::notencrypted: "Update the plaintext hiera data"
 profile::windows::iis::encrypted: "Not really encrypted"
   
