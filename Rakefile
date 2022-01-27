@@ -3,7 +3,7 @@ require 'puppet-lint/tasks/puppet-lint'
 PuppetLint::RakeTask.new
 
 PuppetSyntax.exclude_paths = ["vendor/**/*"]
-PuppetSyntax.hieradata_paths = ["**/*.yaml", "*.yaml", "hiera.yaml"]
+PuppetSyntax.hieradata_paths = ["**/*.yaml", "*.yaml"]
 PuppetSyntax.check_hiera_keys = true
 PuppetSyntax.manifests_paths = [
     "manifests/*.pp",
