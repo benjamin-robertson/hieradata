@@ -1,0 +1,46 @@
+config:
+  enable_pull_requests_from_forks: false
+  enable_pe_plans: true
+pipelines:
+  main:
+    triggers:
+    - "COMMIT"
+    stages:
+    - name: "impact"
+      steps:
+      - type: "IMPACT_ANALYSIS"
+        deployments:
+        - "Deployment to development on lab"
+        - "Deployment to production on lab"
+        concurrent_compilations: 10
+        all_deployments: false
+        impact_analysis_hiera_regex: "[^.].*"
+      auto_promote: "all_succeeded"
+    - name: "Deployment stage"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment to development on lab"
+        policy:
+          name: "cd4pe_deployments::eventual_consistency"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "72340c21-dbf1-4f73-885c-d19bfc41f9ae"
+          control_repo: "control-repo-lab"
+      - type: "DEPLOYMENT"
+        name: "Deployment to production on lab"
+        policy:
+          name: "cd4pe_deployments::eventual_consistency"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "5ee6e69e-745c-42f1-ae23-acaee09e4c1b"
+          control_repo: "control-repo-lab"
+      auto_promote: false
+spec_version: "V1"
