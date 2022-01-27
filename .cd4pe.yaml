@@ -9,7 +9,7 @@ pipelines:
     - name: "Code Validation stage"
       steps:
       - type: "JOB"
-        name: "control-repo-hiera-syntax-validate"
+        name: "module-hiera-syntax-validate"
         concurrent_compilations: 0
         all_deployments: false
       auto_promote: "all_succeeded"
