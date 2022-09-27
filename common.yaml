@@ -7,12 +7,10 @@ modules::motd::params::content: "Welcome to windows???"
 modules::chocolatey::adobereader::ensure: "latest"
 modules::chocolatey::adobereader::provider: "chocolatey"
 chocolatey::choco_install_location: "c:\\choco\\"
-profile::windows::iis::testing: "From hiera data repo. syntax check"
-profile::windows::iis::notencrypted: "Update the plaintext hiera data"
+profile::windows::iis::testing: "From profile module. Testing cd4pe again"
+profile::windows::iis::notencrypted: "Update the plaintext hiera data."
 profile::windows::iis::encrypted: "Not really encrypted"
-  
-motd::params::content: "Welcome to Windows!!! Testing impact "
-modules::motd::params::content: "Welcome to windows???"
+motd::params::content: "Welcome to Windows!!! Testing impact testte"
 profile::windows::motdwindows::content: "Welcome to windows2019 This is a change Testing impact anaylsis"
 profile::windows::installstuff::stuff:
   - adobereader
@@ -34,8 +32,8 @@ motd_linux: |
 
 
 # Abide config
-abide::benchmark: 'cis'
-abide::config:
+cem_linux::benchmark: 'cis'
+cem_linux::config:
   profile: 'server'
   level: '1'
   control_configs:
@@ -45,13 +43,13 @@ abide::config:
     ensure_message_of_the_day_is_configured_properly:
       config:
         content: "I am a motd"
-    ensure_password_creation_requirements_are_configured:
-      config:
-        minlen: 7
-        lcredit: 0
-        ucredit: 0
-        dcredit: 0
-        ocredit: 0
+#    ensure_password_creation_requirements_are_configured:
+#      config:
+#        minlen: 7
+#        lcredit: 0
+#        ucredit: 0
+#        dcredit: 0
+#        ocredit: 0
 
 #  ignore:
 #    - ensure_permissions_on_etcpasswd_are_configured
@@ -88,8 +86,39 @@ profile::office_hardening::trusted_locations:
 
 
 
-
-
-
 #### Fervid rules
 secure_linux_cis::rules::ensure_imap_and_pop3_server_are_not_installed::enforced: false
+
+
+
+profile::lab::snmp_v3::v3_users:
+  ben:
+    authpass: 'notreal'
+    authpriv: 'notreal'
+
+
+
+# Gitlab settings
+gitlab::gitlab_rails:
+  ldap_enabled: true
+  ldap_servers:
+    myldapserver:
+      label: 'Company LDAP'
+      host: 'ldap.company.tld'
+      port: 389
+      uid: 'uid'
+      method: 'plain' # "tls" or "ssl" or "plain"
+      bind_dn: 'MYBINDDN'
+      password: 'MYBINDPW'
+      active_directory: false
+      allow_username_or_email_login: false
+      block_auto_created_users: false
+      base: 'MYBASEDN'
+      group_base: 'MYGROUPBASE'
+      user_filter: ''
+  time_zone: 'UTC'
+  gitlab_email_enabled: false
+  gitlab_default_theme: 4
+  gitlab_email_display_name: 'GitLab'
+gitlab::letsencrypt:
+  enable: false
