@@ -5,6 +5,7 @@ pipelines:
   main:
     triggers:
     - "COMMIT"
+    - "PULL_REQUEST"
     stages:
     - name: "Code Validation stage"
       steps:
@@ -19,6 +20,9 @@ pipelines:
         deployments:
         - "Deployment to development on lab"
         - "Deployment to production on lab"
+        - "Deployment to prod_group_1 on lab"
+        - "Deployment to prod_group_2 on lab"
+        - "Deployment to prod_group_3 on lab"
         concurrent_compilations: 10
         all_deployments: false
         impact_analysis_hiera_regex: "[^.].*"
@@ -37,6 +41,9 @@ pipelines:
           type: "NODE_GROUP"
           node_group_id: "72340c21-dbf1-4f73-885c-d19bfc41f9ae"
           control_repo: "control-repo-lab"
+      auto_promote: "all_succeeded"
+    - name: "Main Prod Deploy"
+      steps:
       - type: "DEPLOYMENT"
         name: "Deployment to production on lab"
         policy:
@@ -49,5 +56,79 @@ pipelines:
           type: "NODE_GROUP"
           node_group_id: "5ee6e69e-745c-42f1-ae23-acaee09e4c1b"
           control_repo: "control-repo-lab"
+      auto_promote: "all_succeeded"
+    - name: "Prod Deploy 1"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment to prod_group_1 on lab"
+        policy:
+          name: "cd4pe_deployments::eventual_consistency"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "1d8dcd39-bfb2-426c-b835-f3e7f9a85b61"
+          control_repo: "control-repo-lab"
+      auto_promote: "all_succeeded"
+    - name: "Prod Deploy 2"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment to prod_group_2 on lab"
+        policy:
+          name: "cd4pe_deployments::eventual_consistency"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "1c5982ec-7ff3-4d3e-a2db-37fc8391afdb"
+          control_repo: "control-repo-lab"
+      auto_promote: "all_succeeded"
+    - name: "Prod Deploy 3"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment to prod_group_3 on lab"
+        policy:
+          name: "cd4pe_deployments::eventual_consistency"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+          node_group_id: "03c55528-5265-462f-8b40-7f3e794a6b8f"
+          control_repo: "control-repo-lab"
+      auto_promote: false
+  /feature_.*|release_.*/:
+    triggers:
+    - "COMMIT"
+    stages:
+    - name: "Code Validation stage"
+      steps:
+      - type: "JOB"
+        name: "module-hiera-syntax-validate"
+        concurrent_compilations: 0
+        all_deployments: false
+      - type: "PULL_REQUEST_GATE"
+        concurrent_compilations: 0
+        all_deployments: false
+      auto_promote: "all_succeeded"
+    - name: "Pipeline Stage 2"
+      steps:
+      - type: "DEPLOYMENT"
+        name: "Deployment on lab"
+        policy:
+          name: "cd4pe_deployments::feature_branch"
+        timeout: 3600000
+        concurrent_compilations: 0
+        all_deployments: false
+        pe_server: "lab"
+        target:
+          type: "NODE_GROUP"
+        control_repo: "control-repo-lab"
+        base_feature_branch: "main"
       auto_promote: false
 spec_version: "V1"
